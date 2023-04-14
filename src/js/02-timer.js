@@ -40,14 +40,14 @@ const options = {
     if (selectedDates[0] < new Date()) {
       window.alert('Please choose a date in the future');
       btnStart.setAttribute('disabled', true);
+      clearInterval(timerId);
+      dataDays.textContent = '00';
+      dataHours.textContent = '00';
+      dataMinutes.textContent = '00';
+      dataSeconds.textContent = '00';
     } else {
       btnStart.removeAttribute('disabled');
     }
-    clearInterval(timerId);
-    dataDays.textContent = '00';
-    dataHours.textContent = '00';
-    dataMinutes.textContent = '00';
-    dataSeconds.textContent = '00';
   },
 };
 
@@ -64,6 +64,10 @@ btnStart.addEventListener('click', () => {
   }
 
   clearInterval(timerId);
+  dataDays.textContent = '00';
+  dataHours.textContent = '00';
+  dataMinutes.textContent = '00';
+  dataSeconds.textContent = '00';
 
   timerId = setInterval(() => {
     const remainingTime = selectedDate - new Date();
