@@ -1,5 +1,6 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import Notiflix from 'notiflix';
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -38,7 +39,7 @@ const options = {
   onClose(selectedDates) {
     console.log(selectedDates[0]);
     if (selectedDates[0] < new Date()) {
-      window.alert('Please choose a date in the future');
+      Notiflix.Notify.failure('Please choose a date in the future');
       btnStart.setAttribute('disabled', true);
       clearInterval(timerId);
       dataDays.textContent = '00';
@@ -57,17 +58,13 @@ btnStart.addEventListener('click', () => {
   const selectedDate = new Date(dateTimePicker.value);
 
   if (selectedDate < new Date()) {
-    window.alert('Please choose a date in the future');
+    Notiflix.Notify.failure('Please choose a date in the future');
     return;
   } else {
     btnStart.setAttribute('disabled', true);
   }
 
   clearInterval(timerId);
-  dataDays.textContent = '00';
-  dataHours.textContent = '00';
-  dataMinutes.textContent = '00';
-  dataSeconds.textContent = '00';
 
   timerId = setInterval(() => {
     const remainingTime = selectedDate - new Date();
@@ -86,3 +83,42 @@ btnStart.addEventListener('click', () => {
 function addLeadingZero(value) {
   return value.toString().padStart(2, '0');
 }
+
+// Add styles
+const style = document.createElement('style');
+style.innerHTML = `
+.timer {
+  display: flex;
+  gap: 5px;
+  max-width: 360px;
+  margin-top: 10px;
+}
+
+.field {
+  padding: 5px;
+  border-radius: 20px;
+  flex-basis: calc(25% - 5px);
+  display: flex;
+  flex-direction: column;
+  background: rgb(106,106,106);
+  background: linear-gradient(180deg, rgba(106,106,106,1) 0%, rgba(133,138,140,1) 50%);
+  color: #ffffff;
+  line-height: 1.2;
+  align-items: center;
+}
+
+.value {
+  font-size: 36px;
+}
+
+#datetime-picker {
+  max-width: 265px;
+  width:100%
+}
+
+button[data-start] {
+  max-width: 85px;
+  width:100%
+}
+`;
+document.head.appendChild(style);
